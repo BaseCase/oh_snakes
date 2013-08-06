@@ -12,6 +12,7 @@
   "readmeFilename": "README.md",
   "gitHead": "950ca2df9e10f57cbd36f78f66ce7fa0de9b9aa3",
   "devDependencies": {
-    "should": "~1.2.2"
+    "should": "~1.2.2",
+    "sinon": "~1.7.3"
   }
 }
