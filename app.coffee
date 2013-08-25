@@ -1,3 +1,10 @@
+# TODO NEXT:
+#   snaek needs a tail!
+#   snaek is HUNGRY
+
+
+
+
 world = []
 keyboard_listeners = []
 
