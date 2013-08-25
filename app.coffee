@@ -1,4 +1,5 @@
 world = []
+keyboard_listeners = []
 
 
 main = ->
@@ -6,8 +7,16 @@ main = ->
   painter = new Painter canvas
   snake = new Snake
   world.push snake
+  keyboard_listeners.push snake
   setInterval (->
     game_loop painter, snake), 1000
+  document.onkeydown = handle_keyboard
+
+
+handle_keyboard = (e) ->
+  key = e.keyCode
+  for kl in keyboard_listeners
+    kl.handle_keypress key
 
 
 game_loop = (painter, snake) ->
@@ -32,6 +41,16 @@ class Snake
       @head.y++
     else if @direction is 'u'
       @head.y--
+
+  handle_keypress: (key) ->
+    if key is 37
+      @direction = 'l'
+    else if key is 38
+      @direction = 'u'
+    else if key is 39
+      @direction = 'r'
+    else if key is 40
+      @direction = 'd'
 
 
 class Pixel
