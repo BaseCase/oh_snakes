@@ -1,7 +1,19 @@
+world = []
+
+
 main = ->
   canvas = document.getElementById 'gameboard'
   painter = new Painter canvas
   snake = new Snake
+  world.push snake
+  setInterval (->
+    game_loop painter, snake), 1000
+
+
+game_loop = (painter, snake) ->
+  painter.clear_all()
+  for thing in world
+    thing.update_position()
   painter.draw(snake)
 
 
@@ -9,6 +21,17 @@ class Snake
   constructor: (head) ->
     @head = head or new Pixel 5,5
     @pixels = [@head]
+    @direction = 'r'
+
+  update_position: ->
+    if @direction is 'r'
+      @head.x++
+    else if @direction is 'l'
+      @head.x--
+    else if @direction is 'd'
+      @head.y++
+    else if @direction is 'u'
+      @head.y--
 
 
 class Pixel
@@ -28,6 +51,9 @@ class Painter
       right = @pixel_size
       bottom = @pixel_size
       @ctx.fillRect left,top , right,bottom
+
+  clear_all: ->
+    @ctx.clearRect 0,0 , @canvas.width,@canvas.height
 
 
 main()
