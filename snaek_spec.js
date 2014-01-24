@@ -36,13 +36,13 @@ describe("Snake", function() {
   it("moves one cell in current direction on update", function() {
     var snake = new Snake();
     snake.direction = 'right';
-    var init_x = snake.position.x;
+    var init_x = snake.getPosition().x;
     snake.update();
-    expect(snake.position.x).to.equal(init_x + 1);
+    expect(snake.getPosition().x).to.equal(init_x + 1);
     snake.direction = 'down';
-    var init_y = snake.position.y;
+    var init_y = snake.getPosition().y;
     snake.update();
-    expect(snake.position.y).to.equal(init_y + 1);
+    expect(snake.getPosition().y).to.equal(init_y + 1);
   });
 
   it("grows when it eats", function() {
@@ -64,7 +64,7 @@ describe("Apple", function() {
     });
     var a1 = new Apple(10, 10);
     var a2 = new Apple(10, 10);
-    expect(a1.position.x).to.be.lessThan(a2.position.x);
+    expect(a1.getPosition().x).to.be.lessThan(a2.getPosition().x);
   });
 });
 
@@ -72,7 +72,7 @@ describe("Apple", function() {
 describe("GameBoard", function() {
   it("keeps the same Apple if the Snake didn't eat it", function() {
     var board = new GameBoard();
-    board.snake.position = {x:1, y:1};
+    board.snake.body[0] = {x:1, y:1};
     board.apple.position = {x:2, y:2};
     var originalApple = board.apple;
     board.update();
@@ -81,7 +81,7 @@ describe("GameBoard", function() {
 
   it("gets a new Apple after the snake eats it", function() {
     var board = new GameBoard();
-    board.snake.position = {x:1, y:1};
+    board.snake.body[0] = {x:1, y:1};
     board.apple.position = {x:1, y:1};
     var originalApple = board.apple;
     board.update();
@@ -90,7 +90,7 @@ describe("GameBoard", function() {
 
   it("makes the snake eat the apple if they collide", function() {
     var board = new GameBoard();
-    board.snake.position = {x:1, y:1};
+    board.snake.body[0] = {x:1, y:1};
     board.apple.position = {x:1, y:1};
     var snakeEat = sinon.spy(board.snake, 'eat');
     board.update();

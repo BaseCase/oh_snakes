@@ -27,14 +27,14 @@ exports.snaeks = function(window, document) {
 
   function drawSnake() {
     board.fillStyle = "rgb(0,255,0)";
-    [gameBoard.snake.position].concat(gameBoard.snake.tail).forEach(function(cell) {
+    gameBoard.snake.body.forEach(function(cell) {
       board.fillRect(cell.x * 20, cell.y * 20, 20, 20);
     });
   }
 
   function drawApple() {
     board.fillStyle = "rgb(255,0,0)";
-    board.fillRect(gameBoard.apple.position.x * 20, gameBoard.apple.position.y * 20, 20, 20);
+    board.fillRect(gameBoard.apple.getPosition().x * 20, gameBoard.apple.getPosition().y * 20, 20, 20);
   }
 
   function handleKeydown(e) {
@@ -54,30 +54,35 @@ exports.Snake = function() {
   var HORIZONTAL = [LEFT, RIGHT];
 
   this.direction = RIGHT;
-  this.position = {x: 3, y: 3};
 
-  this.tail = [
+  this.getPosition = function() {
+    return this.body[0];
+  };
+
+  this.body = [
+    {x: 3, y: 3},
     {x: 2, y: 3},
     {x: 1, y: 3}
   ];
 
   this.update = function() {
-    this.tail.pop();
-    this.tail.unshift({x: this.position.x, y: this.position.y});
+    this.body.pop();
+    var pos = {x: this.body[0].x, y: this.body[0].y};
     switch(this.direction) {
       case LEFT:
-        this.position.x--;
+        pos.x--;
         break;
       case RIGHT:
-        this.position.x++;
+        pos.x++;
         break;
       case UP:
-        this.position.y--;
+        pos.y--;
         break;
       case DOWN:
-        this.position.y++;
+        pos.y++;
         break;
     }
+    this.body.unshift(pos);
   };
 
   this.turn = function(newDirection) {
@@ -88,14 +93,14 @@ exports.Snake = function() {
   };
 
   this.eat = function() {
-    this.tail.unshift({
-      x: this.position.x,
-      y: this.position.y
+    this.body.unshift({
+      x: this.body[0].x,
+      y: this.body[0].y
     });
   };
 
   this.getLength = function() {
-    return this.tail.length + 1;
+    return this.body.length + 1;
   };
 };
 
@@ -104,6 +109,10 @@ exports.Apple = function(boardWidth, boardHeight) {
   this.position = {
     x: Math.floor((Math.random() * boardWidth)),
     y: Math.floor((Math.random() * boardHeight))
+  };
+
+  this.getPosition = function() {
+    return this.position;
   };
 };
 
@@ -125,8 +134,8 @@ exports.GameBoard = function(boardWidth, boardHeight) {
   };
 
   this.collides = function(thing1, thing2) {
-    return thing1.position.x === thing2.position.x &&
-           thing1.position.y === thing2.position.y;
+    return thing1.getPosition().x === thing2.getPosition().x &&
+           thing1.getPosition().y === thing2.getPosition().y;
   };
 };
 
