@@ -96,5 +96,24 @@ describe("GameBoard", function() {
     board.update();
     expect(snakeEat.called).to.be.true;
   });
+
+  it("kills the snake if it hits a wall", function() {
+    var board = new GameBoard();
+    var snake = board.snake;
+    snake.body[0] = {x:0, y:1};
+    snake.direction = 'left';
+    board.update();
+    expect(snake).not.to.equal(board.snake);
+  });
+
+  it("kills the snake if its head hits its tail", function() {
+    var board = new GameBoard();
+    var snake = board.snake;
+    var head = snake.body[0];
+    head.x = snake.body[2].x;
+    head.y = snake.body[2].y;
+    board.update();
+    expect(snake).not.to.equal(board.snake);
+  });
 });
 
