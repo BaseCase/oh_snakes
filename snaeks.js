@@ -4,20 +4,26 @@ if (typeof exports === 'undefined') var exports = window;
 exports.snaeks = function(window, document) {
   var board = document.getElementById('gameboard').getContext('2d');
   var gameBoard = new GameBoard(board.canvas.width / 20, board.canvas.height / 20);
+  var speed = 500;
   var keyMap = {
     '37': 'left',
     '38': 'up',
     '39': 'right',
     '40': 'down'
   };
-  setInterval(updateGame, 500);
   window.onkeydown = handleKeydown;
 
   function updateGame() {
+    var curLevel = gameBoard.level;
     clearBoard();
     gameBoard.update();
+    if (curLevel < gameBoard.level) {
+      speed -= 100;
+    }
     drawSnake();
     drawApple();
+    drawScoreBoard();
+    setTimeout(updateGame, speed);
   }
 
   function clearBoard() {
@@ -41,6 +47,14 @@ exports.snaeks = function(window, document) {
     var dir = keyMap[e.which];
     gameBoard.snake.turn(dir);
   }
+
+  function drawScoreBoard() {
+    board.fillStyle = "rgb(255,255,255)";
+    board.fillText("Score: " + gameBoard.score + "      Level: " + gameBoard.level,
+                   10, 10);
+  }
+
+  updateGame();
 };
 
 
@@ -120,6 +134,8 @@ exports.Apple = function(boardWidth, boardHeight) {
 exports.GameBoard = function(boardWidth, boardHeight) {
   this.snake = new exports.Snake();
   this.apple = new exports.Apple(boardWidth, boardHeight);
+  this.score = 0;
+  this.level = 1;
 
   this.update = function() {
     this.maybeEatApple();
@@ -131,6 +147,8 @@ exports.GameBoard = function(boardWidth, boardHeight) {
     if (this.collides(this.snake, this.apple)) {
       this.apple = new exports.Apple(boardWidth, boardHeight);
       this.snake.eat();
+      this.score++;
+      if (this.score % 5 === 0) this.level++;
     }
   };
 

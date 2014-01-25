@@ -66,6 +66,8 @@ describe("Apple", function() {
     var a2 = new Apple(10, 10);
     expect(a1.getPosition().x).to.be.lessThan(a2.getPosition().x);
   });
+
+  xit("should not spawn on top of the snake's body");
 });
 
 
@@ -115,5 +117,7 @@ describe("GameBoard", function() {
     board.update();
     expect(snake).not.to.equal(board.snake);
   });
+
+  xit("haha what you did with the score and level was terrible! fix it and write tests!");
 });
 
