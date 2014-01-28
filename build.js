@@ -5,34 +5,45 @@ var minify = require('uglify-js').minify;
 var fs = require('fs');
 
 
-var args = process.argv.slice(2);
-if (args.indexOf('dev') >= 0) {
-  concat();
-} else {
-  concat(compress);
-}
-
-
-function concat(callback) {
-  var package = stitch.createPackage({
-    paths: [__dirname + '/src']
-  });
-
-  package.compile(function(err, source) {
-    fs.writeFile('snaeks.js', source, function(err) {
-      if (err) throw err;
-      console.log('Compiled snaeks.js');
-      if (callback) callback();
+var tasks = {
+  concat: function() {
+    var package = stitch.createPackage({
+      paths: [__dirname + '/src']
     });
-  });
+
+    package.compile(function(err, source) {
+      fs.writeFile('snaeks.js', source, function(err) {
+        if (err) throw err;
+        console.log('Compiled snaeks.js');
+        runNextTask();
+      });
+    });
+  },
+
+  compress: function() {
+    var minified = minify('snaeks.js');
+    fs.writeFile('snaeks.js', minified.code, function(err) {
+      if (err) throw err;
+      console.log('Minified snaeks.js');
+      runNextTask();
+    });
+  }
+};
+
+
+var commands = process.argv.slice(2);
+
+// default task if none specified in args: concat then minify
+if (!commands.length) {
+  commands = ['concat', 'compress'];
 }
 
-function compress(callback) {
-  var minified = minify('snaeks.js');
-  fs.writeFile('snaeks.js', minified.code, function(err) {
-    if (err) throw err;
-    console.log('Minified snaeks.js');
-    if (callback) callback();
-  });
+function runNextTask() {
+  var task = commands.shift();
+  if (typeof(task) !== 'undefined') {
+    tasks[task]();
+  }
 }
+
+runNextTask();
 
