@@ -1,12 +1,11 @@
 #!/usr/local/bin/node
 
-var stitch = require('stitch');
-var minify = require('uglify-js').minify;
 var fs = require('fs');
 
 
 var tasks = {
   concat: function() {
+    var stitch = require('stitch');
     var package = stitch.createPackage({
       paths: [__dirname + '/src']
     });
@@ -21,6 +20,7 @@ var tasks = {
   },
 
   compress: function() {
+    var minify = require('uglify-js').minify;
     var minified = minify('snaeks.js');
     fs.writeFile('snaeks.js', minified.code, function(err) {
       if (err) throw err;
