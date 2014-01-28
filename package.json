@@ -2,11 +2,16 @@
   "name": "oh_snakes",
   "version": "0.0.0",
   "description": "oh dang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BaseCase/oh_snakes"
+  },
   "author": "Casey Brant",
   "license": "ISC",
   "devDependencies": {
     "chai": "~1.8.1",
     "mocha": "~1.17.0",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "stitch": "~0.3.3"
   }
 }
