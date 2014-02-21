@@ -14,14 +14,20 @@ exports.Snake = function() {
   };
 
   this.body = [
-    {x: 3, y: 3},
-    {x: 2, y: 3},
-    {x: 1, y: 3}
+    {x: 3, y: 3, direction: RIGHT},
+    {x: 2, y: 3, direction: RIGHT},
+    {x: 1, y: 3, direction: RIGHT}
   ];
 
   this.update = function() {
     this.body.pop();
-    var pos = {x: this.body[0].x, y: this.body[0].y};
+
+    var pos = {
+      x: this.body[0].x,
+      y: this.body[0].y,
+      direction: this.direction
+    };
+
     switch(this.direction) {
       case LEFT:
         pos.x--;

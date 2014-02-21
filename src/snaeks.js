@@ -17,8 +17,15 @@ exports.snaeks = function(window, document) {
     var curLevel = gameBoard.level;
     clearBoard();
     gameBoard.update();
+    /****
     if (curLevel < gameBoard.level) {
       speed -= 100;
+    }
+    ***/
+    if (gameBoard.score == 2) {
+      speed = 0;
+    } else {
+      speed = 400;
     }
     drawSnake();
     drawApple();
@@ -32,15 +39,43 @@ exports.snaeks = function(window, document) {
   }
 
   function drawSnake() {
-    board.fillStyle = "rgb(0,255,0)";
-    gameBoard.snake.body.forEach(function(cell) {
-      board.fillRect(cell.x * 20, cell.y * 20, 20, 20);
+    this.snake_head_img = this.snake_head_img || document.getElementById('snake-head-img');
+    this.snake_body_img = this.snake_body_img || document.getElementById('snake-body-img');
+    this.snake_tail_img = this.snake_tail_img || document.getElementById('snake-tail-img');
+
+    var head = gameBoard.snake.getPosition();
+    drawWithRotation(this.snake_head_img, head);
+
+    gameBoard.snake.body.slice(1, gameBoard.snake.body.length-1).forEach(function(cell) {
+      drawWithRotation(this.snake_body_img, cell);
     });
+
+    var tail = gameBoard.snake.body[gameBoard.snake.body.length-1];
+    drawWithRotation(this.snake_tail_img, tail);
+  }
+
+  var rotations = {
+    'left': 0,
+    'right': Math.PI,
+    'up': Math.PI / 2,
+    'down': Math.PI * 1.5
+  };
+
+  function drawWithRotation(img, pos) {
+    board.save();
+    // position the origin at the center of the image
+    board.translate(pos.x*20+10, pos.y*20+10);
+    // rotate the appropriate amount
+    board.rotate(rotations[pos.direction]);
+    // draw the image (remember we repositioned the origin)
+    board.drawImage(img, -10, -10);
+    // go back to the board arrangement we had before
+    board.restore();
   }
 
   function drawApple() {
-    board.fillStyle = "rgb(255,0,0)";
-    board.fillRect(gameBoard.apple.getPosition().x * 20, gameBoard.apple.getPosition().y * 20, 20, 20);
+    this.apple_img = this.apple_img || document.getElementById('apple-img');
+    board.drawImage(this.apple_img, gameBoard.apple.getPosition().x * 20, gameBoard.apple.getPosition().y * 20);
   }
 
   function handleKeydown(e) {
