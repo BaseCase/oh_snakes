@@ -1,3 +1,4 @@
 .DS_Store
 node_modules/
-
+snaeks.js
+!src/snaeks.js
