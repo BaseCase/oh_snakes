@@ -19,7 +19,14 @@ exports.snaeks = function(window, document) {
   var BLOCK_SIZE = 20;
   var speed = 500;
   var ctx = document.getElementById('gameboard').getContext('2d');
-  var gameBoard = new GameBoard(ctx.canvas.width / BLOCK_SIZE, ctx.canvas.height / BLOCK_SIZE);
+  var inboundsWidth = (ctx.canvas.width / BLOCK_SIZE) - 2;
+  var inboundsHeight = (ctx.canvas.height / BLOCK_SIZE) - 2;
+  var gameBoard = new GameBoard(inboundsWidth, inboundsHeight);
+
+  function drawBorder() {
+    ctx.fillStyle = "rgb(200,200,0)";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
 
   function updateGame() {
     clearBoard();
@@ -40,7 +47,7 @@ exports.snaeks = function(window, document) {
 
   function clearBoard() {
     ctx.fillStyle = "rgb(20,20,20)";
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillRect(BLOCK_SIZE, BLOCK_SIZE, ctx.canvas.width - BLOCK_SIZE*2, ctx.canvas.height - BLOCK_SIZE*2);
   }
 
   function drawSnake() {
@@ -72,7 +79,7 @@ exports.snaeks = function(window, document) {
     var halfBlock = Math.floor(BLOCK_SIZE / 2);
     ctx.save();
     // position the origin at the center of the image
-    ctx.translate((pos.x * BLOCK_SIZE) + halfBlock, (pos.y * BLOCK_SIZE) + halfBlock);
+    ctx.translate(((pos.x+1) * BLOCK_SIZE) + halfBlock, ((pos.y+1) * BLOCK_SIZE) + halfBlock);
     // rotate the appropriate amount
     ctx.rotate(ROTATION_MAP[pos.direction]);
     // draw the image (remember we repositioned the origin)
@@ -83,7 +90,9 @@ exports.snaeks = function(window, document) {
 
   function drawApple() {
     this.apple_img = this.apple_img || document.getElementById('apple-img');
-    ctx.drawImage(this.apple_img, gameBoard.apple.getPosition().x * BLOCK_SIZE, gameBoard.apple.getPosition().y * BLOCK_SIZE);
+    ctx.drawImage(this.apple_img,
+                  (gameBoard.apple.getPosition().x+1) * BLOCK_SIZE,
+                  (gameBoard.apple.getPosition().y+1) * BLOCK_SIZE);
   }
 
   function handleKeydown(e) {
@@ -93,12 +102,16 @@ exports.snaeks = function(window, document) {
   }
 
   function drawScoreBoard() {
-    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.fillStyle = "rgb(200,200,0)";
+    ctx.fillRect(0, 0, BLOCK_SIZE*15, BLOCK_SIZE);
+    ctx.font = "14px sans-serif";
+    ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillText("Score: " + gameBoard.score + "      Level: " + gameBoard.level,
-                   10, 10);
+                 BLOCK_SIZE, (BLOCK_SIZE/2) + 5);
   }
 
   window.onkeydown = handleKeydown;
+  drawBorder();
   updateGame();
 };
 
