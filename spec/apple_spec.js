@@ -14,7 +14,4 @@ describe("Apple", function() {
     var a2 = new Apple(10, 10);
     expect(a1.getPosition().x).to.be.lessThan(a2.getPosition().x);
   });
-
-  xit("should not spawn on top of the snake's body");
 });
-

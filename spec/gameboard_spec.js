@@ -50,6 +50,5 @@ describe("GameBoard", function() {
     expect(snake).not.to.equal(board.snake);
   });
 
-  xit("haha what you did with the score and level was terrible! fix it and write tests!");
+  xit("won't let an Apple spawn on top of the snake");
 });
-

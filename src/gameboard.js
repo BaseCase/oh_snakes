@@ -4,7 +4,6 @@ var Apple = require('./apple').Apple;
 
 exports.GameBoard = function(boardWidth, boardHeight) {
   this.snake = new Snake();
-  this.apple = new Apple(boardWidth, boardHeight);
   this.score = 0;
   this.level = 1;
 
@@ -14,9 +13,16 @@ exports.GameBoard = function(boardWidth, boardHeight) {
     this.checkForDeath();
   };
 
+  this.getANewApple = function() {
+    this.apple = new Apple(boardWidth, boardHeight);
+    while (this.snake.isOnMe(this.apple)) {
+      this.apple = new Apple(boardWidth, boardHeight);
+    }
+  };
+
   this.maybeEatApple = function() {
     if (this.snake.isOnMe(this.apple)) {
-      this.apple = new Apple(boardWidth, boardHeight);
+      this.getANewApple();
       this.snake.eat();
       this.score++;
       if (this.score % 5 === 0) this.level++;
@@ -46,5 +52,6 @@ exports.GameBoard = function(boardWidth, boardHeight) {
     return (cell.x === list[0].x && cell.y === list[0].y) ||
            this.hasMatchingCell(cell, list.slice(1));
   };
-};
 
+  this.getANewApple();
+};

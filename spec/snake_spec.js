@@ -49,8 +49,6 @@ describe("Snake", function() {
     expect(snake.getLength()).to.equal(len + 1);
   });
 
-  xit("no specs for the tail? that seems like an oversight...");
-
   describe("collision detection", function() {
     var snake = new Snake();
     it("knows if something is on its head", function() {
