@@ -50,6 +50,30 @@ describe("Snake", function() {
   });
 
   xit("no specs for the tail? that seems like an oversight...");
+
+  describe("collision detection", function() {
+    var snake = new Snake();
+    it("knows if something is on its head", function() {
+      var thing = {
+        getPosition: function() { return snake.getPosition(); }
+      };
+      expect(snake.isOnMe(thing)).to.be.true;
+    });
+
+    it("knows if something is on its tail", function() {
+      var snake = new Snake();
+      var thing = {
+        getPosition: function() { return snake.body[1]; }
+      };
+      expect(snake.isOnMe(thing)).to.be.true;
+    });
+
+    it("knows if something is NOT on it", function() {
+      var snake = new Snake();
+      var thing = {
+        getPosition: function() { return {x:100, y:100}; }
+      };
+      expect(snake.isOnMe(thing)).to.be.false;
+    });
+  });
 });
-
-

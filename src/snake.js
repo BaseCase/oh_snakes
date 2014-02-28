@@ -59,6 +59,13 @@ exports.Snake = function() {
     });
   };
 
+  this.isOnMe = function(thing) {
+    var pos = thing.getPosition();
+    return this.body.reduce(function(acc, cell) {
+      return acc || pos.x == cell.x || pos.y == cell.y;
+    }, false);
+  };
+
   this.getLength = function() {
     return this.body.length + 1;
   };
