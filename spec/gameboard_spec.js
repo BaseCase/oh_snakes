@@ -7,8 +7,7 @@ var GameBoard = require('../src/gameboard').GameBoard;
 describe("GameBoard", function() {
   it("keeps the same Apple if the Snake didn't eat it", function() {
     var board = new GameBoard();
-    board.snake.body[0] = {x:1, y:1};
-    board.apple.position = {x:2, y:2};
+    board.apple.position = {x:20, y:20};
     var originalApple = board.apple;
     board.update();
     expect(board.apple).to.equal(originalApple);

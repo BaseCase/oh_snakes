@@ -15,17 +15,12 @@ exports.GameBoard = function(boardWidth, boardHeight) {
   };
 
   this.maybeEatApple = function() {
-    if (this.collides(this.snake, this.apple)) {
+    if (this.snake.isOnMe(this.apple)) {
       this.apple = new Apple(boardWidth, boardHeight);
       this.snake.eat();
       this.score++;
       if (this.score % 5 === 0) this.level++;
     }
-  };
-
-  this.collides = function(thing1, thing2) {
-    return thing1.getPosition().x === thing2.getPosition().x &&
-           thing1.getPosition().y === thing2.getPosition().y;
   };
 
   this.checkForDeath = function() {
