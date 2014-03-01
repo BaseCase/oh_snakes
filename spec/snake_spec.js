@@ -73,5 +73,15 @@ describe("Snake", function() {
       };
       expect(snake.isOnMe(thing)).to.be.false;
     });
+
+    it("doesn't think something is on it if it's only the same on one axis", function() {
+      //this seems dumb but it was a legit bug I didn't catch at first :/
+      var snake = new Snake();
+      var pos = snake.getPosition();
+      var thing = {
+        getPosition: function() { return {x:pos.x, y:100}; }
+      };
+      expect(snake.isOnMe(thing)).to.be.false;
+    });
   });
 });
