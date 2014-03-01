@@ -2,6 +2,7 @@ var GameBoard = require('./gameboard').GameBoard;
 
 
 exports.snaeks = function snaeks(window, document) {
+  var PLAYING = false;
   var KEYMAP = {
     '37': 'left',
     '38': 'up',
@@ -101,6 +102,10 @@ exports.snaeks = function snaeks(window, document) {
 
   function handleKeydown(e) {
     e.preventDefault();
+    if (!PLAYING && e.which == 13) {
+      PLAYING = true;
+      updateGame();
+    }
     var dir = KEYMAP[e.which];
     gameBoard.snake.turn(dir);
   }
@@ -114,8 +119,16 @@ exports.snaeks = function snaeks(window, document) {
                  BLOCK_SIZE, (BLOCK_SIZE/2) + 5);
   }
 
+  function flashMessage() {
+    clearBoard();
+    ctx.font = "40px monospace";
+    ctx.fillStyle = "rgb(0,255,0)";
+    ctx.fillText("Uh oh! snaeks", 150, 150);
+    ctx.font = "16px monospace";
+    ctx.fillText("Press <enter> to play", 200, 300);
+  }
+
   window.onkeydown = handleKeydown;
   drawBorder();
-  updateGame();
+  flashMessage();
 };
-
