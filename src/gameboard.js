@@ -8,8 +8,8 @@ exports.GameBoard = function(boardWidth, boardHeight) {
   this.level = 1;
 
   this.update = function() {
-    this.maybeEatApple();
     this.snake.update();
+    this.maybeEatApple();
     this.checkForDeath();
   };
 
@@ -43,14 +43,12 @@ exports.GameBoard = function(boardWidth, boardHeight) {
   };
 
   this.checkForSelfHit = function() {
-    var head = this.snake.body[0];
-    return this.hasMatchingCell(head, this.snake.body.slice(1));
-  };
-
-  this.hasMatchingCell = function(cell, list) {
-    if (!list.length) return false;
-    return (cell.x === list[0].x && cell.y === list[0].y) ||
-           this.hasMatchingCell(cell, list.slice(1));
+    // wow wtf is this doing on GameBoard. some gross duplication
+    // here with Snake.isOnMe :( :( :(
+    var head = this.snake.getPosition();
+    return this.snake.body.slice(1).reduce(function(acc, cell) {
+      return acc || (head.x == cell.x && head.y == cell.y);
+    }, false);
   };
 
   this.getANewApple();

@@ -42,10 +42,11 @@ describe("Snake", function() {
     expect(snake.getPosition().y).to.equal(init_y + 1);
   });
 
-  it("grows when it eats", function() {
+  it("grows on next update when it eats", function() {
     var snake = new Snake();
     var len = snake.getLength();
     snake.eat();
+    snake.update();
     expect(snake.getLength()).to.equal(len + 1);
   });
 

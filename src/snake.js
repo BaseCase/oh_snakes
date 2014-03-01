@@ -20,7 +20,7 @@ exports.Snake = function() {
   ];
 
   this.update = function() {
-    this.body.pop();
+    this.grow();
 
     var pos = {
       x: this.body[0].x,
@@ -53,11 +53,16 @@ exports.Snake = function() {
   };
 
   this.eat = function() {
-    this.body.unshift({
-      x: this.body[0].x,
-      y: this.body[0].y
-    });
+    this.justAte = true;
   };
+
+  this.grow = function() {
+    if (!this.justAte) {
+      this.body.pop();
+    } else {
+      this.justAte = false;
+    }
+  }
 
   this.isOnMe = function(thing) {
     var pos = thing.getPosition();
@@ -70,4 +75,3 @@ exports.Snake = function() {
     return this.body.length + 1;
   };
 };
-
