@@ -36,8 +36,8 @@ describe("GameBoard", function() {
     var snake = board.snake;
     snake.body[0] = {x:0, y:1};
     snake.direction = 'left';
-    board.update();
-    expect(snake).not.to.equal(board.snake);
+    var update = function() { board.update() };
+    expect(update).to.throw("You dead");
   });
 
   it("kills the snake if its head hits its tail", function() {
@@ -46,8 +46,8 @@ describe("GameBoard", function() {
     var head = snake.body[0];
     head.x = snake.body[2].x;
     head.y = snake.body[2].y;
-    board.update();
-    expect(snake).not.to.equal(board.snake);
+    var update = function() { board.update() };
+    expect(update).to.throw("You dead");
   });
 
   xit("won't let an Apple spawn on top of the snake");

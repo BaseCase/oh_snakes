@@ -1,7 +1,7 @@
 var GameBoard = require('./gameboard').GameBoard;
 
 
-exports.snaeks = function(window, document) {
+exports.snaeks = function snaeks(window, document) {
   var KEYMAP = {
     '37': 'left',
     '38': 'up',
@@ -31,7 +31,11 @@ exports.snaeks = function(window, document) {
   function updateGame() {
     clearBoard();
     var curLevel = gameBoard.level;
-    gameBoard.update();
+    try {
+      gameBoard.update();
+    } catch (e) {
+      return snaeks(window, document);
+    }
     adjustLevel(curLevel);
     drawSnake();
     drawApple();

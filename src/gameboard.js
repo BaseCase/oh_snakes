@@ -31,7 +31,7 @@ exports.GameBoard = function(boardWidth, boardHeight) {
 
   this.checkForDeath = function() {
     if (this.checkForWallHit() || this.checkForSelfHit()) {
-      this.snake = new Snake();
+      throw "You dead";
     }
   };
 
