@@ -1,8 +1,9 @@
 var GameBoard = require('./gameboard').GameBoard;
 
 
-exports.snaeks = function snaeks(window, document) {
+exports.snaeks = function snaeks(window, document, message) {
   var PLAYING = false;
+
   var KEYMAP = {
     '37': 'left',
     '38': 'up',
@@ -35,7 +36,7 @@ exports.snaeks = function snaeks(window, document) {
     try {
       gameBoard.update();
     } catch (e) {
-      return snaeks(window, document);
+      return snaeks(window, document, "death. score: " + gameBoard.score);
     }
     adjustLevel(curLevel);
     drawSnake();
@@ -119,16 +120,16 @@ exports.snaeks = function snaeks(window, document) {
                  BLOCK_SIZE, (BLOCK_SIZE/2) + 5);
   }
 
-  function flashMessage() {
+  function flashMessage(message) {
     clearBoard();
     ctx.font = "40px monospace";
     ctx.fillStyle = "rgb(0,255,0)";
-    ctx.fillText("Uh oh! snaeks", 150, 150);
+    ctx.fillText(message, 150, 150);
     ctx.font = "16px monospace";
     ctx.fillText("Press <enter> to play", 200, 300);
   }
 
   window.onkeydown = handleKeydown;
   drawBorder();
-  flashMessage();
+  flashMessage(message || "Uh oh! saneks");
 };
